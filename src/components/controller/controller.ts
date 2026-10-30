@@ -1,27 +1,34 @@
+import type { EverythingResponse, SourcesResponse } from '../../types/news-api';
+import { ApiEndpoint } from '../../types/news-api';
 import AppLoader from './appLoader';
 
 class AppController extends AppLoader {
-    getSources(callback) {
-        super.getResp(
+    private static getHTMLElement(element: EventTarget | null): HTMLElement | null {
+        return element instanceof HTMLElement ? element : null;
+    }
+
+    public getSources(callback: (data: SourcesResponse) => void): void {
+        super.getResp<SourcesResponse>(
             {
-                endpoint: 'sources',
+                endpoint: ApiEndpoint.Sources,
             },
             callback
         );
     }
 
-    getNews(e, callback) {
-        let target = e.target;
-        const newsContainer = e.currentTarget;
+    public getNews(e: MouseEvent, callback: (data: EverythingResponse) => void): void {
+        let target: HTMLElement | null = AppController.getHTMLElement(e.target);
+        const newsContainer: HTMLElement | null = AppController.getHTMLElement(e.currentTarget);
+        if (newsContainer === null) return;
 
-        while (target !== newsContainer) {
+        while (target !== null && target !== newsContainer) {
             if (target.classList.contains('source__item')) {
-                const sourceId = target.getAttribute('data-source-id');
-                if (newsContainer.getAttribute('data-source') !== sourceId) {
+                const sourceId: string | null = target.getAttribute('data-source-id');
+                if (sourceId && newsContainer.getAttribute('data-source') !== sourceId) {
                     newsContainer.setAttribute('data-source', sourceId);
-                    super.getResp(
+                    super.getResp<EverythingResponse>(
                         {
-                            endpoint: 'everything',
+                            endpoint: ApiEndpoint.Everything,
                             options: {
                                 sources: sourceId,
                             },
@@ -31,7 +38,7 @@ class AppController extends AppLoader {
                 }
                 return;
             }
-            target = target.parentNode;
+            target = target.parentElement;
         }
     }
 }
