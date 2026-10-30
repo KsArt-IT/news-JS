@@ -1,20 +1,42 @@
+import type { SourceItem } from '../../../types/news-api';
+import { getTypeOrNull } from '../../../utils/dom';
 import './sources.css';
 
 class Sources {
-    draw(data) {
-        const fragment = document.createDocumentFragment();
-        const sourceItemTemp = document.querySelector('#sourceItemTemp');
+    public draw(data: SourceItem[]): void {
+        const container: HTMLElement | null = getTypeOrNull(document.querySelector('.sources'), HTMLElement);
+        const sourceItemTemp: HTMLTemplateElement | null = getTypeOrNull(
+            document.querySelector('#sourceItemTemp'),
+            HTMLTemplateElement
+        );
+        if (container === null || sourceItemTemp === null) return;
 
-        data.forEach((item) => {
-            const sourceClone = sourceItemTemp.content.cloneNode(true);
+        const fragment: DocumentFragment = document.createDocumentFragment();
 
-            sourceClone.querySelector('.source__item-name').textContent = item.name;
-            sourceClone.querySelector('.source__item').setAttribute('data-source-id', item.id);
+        data.forEach((item: SourceItem) => {
+            const sourceClone: DocumentFragment | null = getTypeOrNull(
+                sourceItemTemp.content.cloneNode(true),
+                DocumentFragment
+            );
+            if (sourceClone === null) return;
+
+            const sourceItemName: HTMLElement | null = getTypeOrNull(
+                sourceClone.querySelector('.source__item-name'),
+                HTMLElement
+            );
+            const sourceItem: HTMLElement | null = getTypeOrNull(
+                sourceClone.querySelector('.source__item'),
+                HTMLElement
+            );
+            if (sourceItem === null || sourceItemName === null) return;
+
+            sourceItemName.textContent = item.name;
+            sourceItem.setAttribute('data-source-id', item.id);
 
             fragment.append(sourceClone);
         });
 
-        document.querySelector('.sources').append(fragment);
+        container.append(fragment);
     }
 }
 

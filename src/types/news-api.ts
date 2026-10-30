@@ -35,6 +35,8 @@ export interface SourceArticle {
     name: string;
 }
 
+export type SourceItem = Pick<Source, 'id' | 'name'>;
+
 export type Category = 'general' | 'business' | 'technology' | 'sports' | 'entertainment' | 'health' | 'science';
 
 export type Nullable<T> = T | null;
