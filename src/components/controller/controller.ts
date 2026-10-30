@@ -1,12 +1,9 @@
 import type { EverythingResponse, SourcesResponse } from '../../types/news-api';
 import { ApiEndpoint } from '../../types/news-api';
+import { getTypeOrNull } from '../../utils/dom';
 import AppLoader from './appLoader';
 
 class AppController extends AppLoader {
-    private static getHTMLElement(element: EventTarget | null): HTMLElement | null {
-        return element instanceof HTMLElement ? element : null;
-    }
-
     public getSources(callback: (data: SourcesResponse) => void): void {
         super.getResp<SourcesResponse>(
             {
@@ -17,8 +14,8 @@ class AppController extends AppLoader {
     }
 
     public getNews(e: MouseEvent, callback: (data: EverythingResponse) => void): void {
-        let target: HTMLElement | null = AppController.getHTMLElement(e.target);
-        const newsContainer: HTMLElement | null = AppController.getHTMLElement(e.currentTarget);
+        let target: HTMLElement | null = getTypeOrNull(e.target, HTMLElement);
+        const newsContainer: HTMLElement | null = getTypeOrNull(e.currentTarget, HTMLElement);
         if (newsContainer === null) return;
 
         while (target !== null && target !== newsContainer) {
