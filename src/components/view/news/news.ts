@@ -19,7 +19,7 @@ class News {
             return;
         }
 
-        const news: Article[] = data.slice(0, 10);
+        const news: Article[] = data.slice(0, 12);
 
         const fragment: DocumentFragment = document.createDocumentFragment();
 

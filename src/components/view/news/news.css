@@ -131,6 +131,20 @@
     left: 0%;
 }
 
+@media (min-width: 1450px) {
+    .news {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+}
+
+@media (min-width: 2160px) {
+    .news {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}
+
 @media (min-width: 640px) {
     .news__item {
         flex-direction: row;
