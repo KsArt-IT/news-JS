@@ -15,8 +15,8 @@
         "browser": true,
         "node": true
     },
+    "ignorePatterns": ["dist", "webpack.*.js"],
     "rules": {
-        "ignorePatterns": ["dist", "webpack.*.js"],
         "no-debugger": "off",
         "no-console": 0,
         "class-methods-use-this": "off",
