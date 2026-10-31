@@ -11,6 +11,14 @@ class News {
         );
         if (container === null || newsItemTemp === null) return;
 
+        if (data.length === 0) {
+            const message: HTMLElement = document.createElement('div');
+            message.classList.add('news__empty');
+            message.textContent = 'No news for this source yet. Try another one.';
+            container.replaceChildren(message);
+            return;
+        }
+
         const news: Article[] = data.slice(0, 10);
 
         const fragment: DocumentFragment = document.createDocumentFragment();
