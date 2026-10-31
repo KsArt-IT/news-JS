@@ -1,37 +1,68 @@
+import type { Article } from '../../../types/news-api';
+import { getTypeOrNull } from '../../../utils/dom';
 import './news.css';
 
 class News {
-    draw(data) {
-        const news = data.length >= 10 ? data.filter((_item, idx) => idx < 10) : data;
+    public draw(data: Article[]): void {
+        const container: HTMLElement | null = getTypeOrNull(document.querySelector('.news'), HTMLElement);
+        const newsItemTemp: HTMLTemplateElement | null = getTypeOrNull(
+            document.querySelector('#newsItemTemp'),
+            HTMLTemplateElement
+        );
+        if (container === null || newsItemTemp === null) return;
 
-        const fragment = document.createDocumentFragment();
-        const newsItemTemp = document.querySelector('#newsItemTemp');
+        const news: Article[] = data.slice(0, 10);
 
-        news.forEach((item, idx) => {
-            const newsClone = newsItemTemp.content.cloneNode(true);
+        const fragment: DocumentFragment = document.createDocumentFragment();
 
-            if (idx % 2) newsClone.querySelector('.news__item').classList.add('alt');
+        news.forEach((item: Article, idx: number) => {
+            const newsClone: DocumentFragment | null = getTypeOrNull(
+                newsItemTemp.content.cloneNode(true),
+                DocumentFragment
+            );
+            if (newsClone === null) return;
 
-            newsClone.querySelector('.news__meta-photo').style.backgroundImage = `url(${
-                item.urlToImage || 'img/news_placeholder.jpg'
-            })`;
-            newsClone.querySelector('.news__meta-author').textContent = item.author || item.source.name;
-            newsClone.querySelector('.news__meta-date').textContent = item.publishedAt
-                .slice(0, 10)
-                .split('-')
-                .reverse()
-                .join('-');
-
-            newsClone.querySelector('.news__description-title').textContent = item.title;
-            newsClone.querySelector('.news__description-source').textContent = item.source.name;
-            newsClone.querySelector('.news__description-content').textContent = item.description;
-            newsClone.querySelector('.news__read-more a').setAttribute('href', item.url);
+            if (idx % 2) {
+                this.updateElement(newsClone, '.news__item', (element) => element.classList.add('alt'));
+            }
+            this.updateElement(
+                newsClone,
+                '.news__meta-photo',
+                (element) => (element.style.backgroundImage = `url(${item.urlToImage || 'img/news_placeholder.jpg'})`)
+            );
+            this.updateElement(
+                newsClone,
+                '.news__meta-author',
+                (element) => (element.textContent = item.author || item.source.name)
+            );
+            this.updateElement(
+                newsClone,
+                '.news__meta-date',
+                (element) => (element.textContent = item.publishedAt.slice(0, 10).split('-').reverse().join('-'))
+            );
+            this.updateElement(newsClone, '.news__description-title', (element) => (element.textContent = item.title));
+            this.updateElement(
+                newsClone,
+                '.news__description-source',
+                (element) => (element.textContent = item.source.name)
+            );
+            this.updateElement(
+                newsClone,
+                '.news__description-content',
+                (element) => (element.textContent = item.description)
+            );
+            this.updateElement(newsClone, '.news__read-more a', (element) => element.setAttribute('href', item.url));
 
             fragment.append(newsClone);
         });
 
-        document.querySelector('.news').innerHTML = '';
-        document.querySelector('.news').appendChild(fragment);
+        container.replaceChildren(fragment);
+    }
+
+    private updateElement(root: DocumentFragment, selector: string, update: (element: HTMLElement) => void): void {
+        const element: HTMLElement | null = getTypeOrNull(root.querySelector(selector), HTMLElement);
+        if (element === null) return;
+        update(element);
     }
 }
 
