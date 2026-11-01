@@ -32,3 +32,8 @@
     font-weight: 400;
     white-space: nowrap;
 }
+
+.source__item-active {
+    border-color: #3fcc59;
+    color: #69db7e;
+}

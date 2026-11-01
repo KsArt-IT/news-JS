@@ -38,6 +38,14 @@ class Sources {
 
         container.append(fragment);
     }
+
+    public setActive(sourceId: string): void {
+        document.querySelectorAll<HTMLElement>('.source__item').forEach((item: HTMLElement) => {
+            const isActive: boolean = item.dataset.sourceId === sourceId;
+            item.classList.toggle('source__item-active', isActive);
+            item.setAttribute('aria-pressed', String(isActive));
+        });
+    }
 }
 
 export default Sources;

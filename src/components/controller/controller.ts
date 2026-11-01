@@ -13,10 +13,10 @@ class AppController extends AppLoader {
         );
     }
 
-    public getNews(e: MouseEvent, callback: (data: EverythingResponse) => void): void {
+    public getNews(e: MouseEvent, callback: (data: EverythingResponse) => void): string | null {
         let target: HTMLElement | null = getTypeOrNull(e.target, HTMLElement);
         const newsContainer: HTMLElement | null = getTypeOrNull(e.currentTarget, HTMLElement);
-        if (newsContainer === null) return;
+        if (newsContainer === null) return null;
 
         while (target !== null && target !== newsContainer) {
             if (target.classList.contains('source__item')) {
@@ -32,11 +32,13 @@ class AppController extends AppLoader {
                         },
                         callback
                     );
+                    return sourceId;
                 }
-                return;
+                return null;
             }
             target = target.parentElement;
         }
+        return null;
     }
 }
 

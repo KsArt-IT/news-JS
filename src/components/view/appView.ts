@@ -20,6 +20,10 @@ export class AppView {
         const values: Source[] = data.sources;
         this.sources.draw(values);
     }
+
+    public setActiveSource(sourceId: string): void {
+        this.sources.setActive(sourceId);
+    }
 }
 
 export default AppView;
