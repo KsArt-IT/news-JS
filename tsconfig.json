@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    /* Language and Environment */
+    "target": "esnext",
+
+    /* Modules */
+    "module": "esnext",
+    "rootDir": "./src",
+    "moduleResolution": "bundler",
+
+    /* Emit */
+    "sourceMap": true,
+    "outDir": "./dist",
+
+    /* Interop Constraints */
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+
+    /* Type Checking */
+    "strict": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+
+    /* Completeness */
+    "skipLibCheck": true,
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "**/*.config.js", "**/*.spec.ts"],
+}
